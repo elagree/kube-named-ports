@@ -10,6 +10,7 @@ import (
 
 	"github.com/bpineau/kube-named-ports/config"
 	"github.com/bpineau/kube-named-ports/pkg/worker"
+	"golang.org/x/net/context"
 
 	core_v1 "k8s.io/api/core/v1"
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -45,6 +46,7 @@ type Controller struct {
 
 // NewController creates and initialize the service controller
 func NewController(conf *config.KnpConfig, w worker.Worker) *Controller {
+	ctx := context.Background()
 	c := &Controller{
 		conf:   conf,
 		worker: w,
@@ -53,10 +55,10 @@ func NewController(conf *config.KnpConfig, w worker.Worker) *Controller {
 	client := c.conf.ClientSet
 	c.listWatch = &cache.ListWatch{
 		ListFunc: func(options meta_v1.ListOptions) (runtime.Object, error) {
-			return client.CoreV1().Services(meta_v1.NamespaceAll).List(options)
+			return client.CoreV1().Services(meta_v1.NamespaceAll).List(ctx, options)
 		},
 		WatchFunc: func(options meta_v1.ListOptions) (watch.Interface, error) {
-			return client.CoreV1().Services(meta_v1.NamespaceAll).Watch(options)
+			return client.CoreV1().Services(meta_v1.NamespaceAll).Watch(ctx, options)
 		},
 	}
 

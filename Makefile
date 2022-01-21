@@ -4,12 +4,13 @@ all: build
 
 tools:
 	which golangci-lint || ( curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $$(go env GOPATH)/bin v1.43.0 )
-	which goveralls || go get github.com/mattn/goveralls
+	which goveralls || go install github.com/mattn/goveralls
 
 lint:
 	golangci-lint --concurrency=1 --deadline=300s --disable-all \
-		--enable=golint \
+		--enable=staticcheck \
 		--enable=vet \
+		--enable=govet \
 		--enable=vetshadow \
 		--enable=varcheck \
 		--enable=errcheck \
@@ -18,7 +19,6 @@ lint:
 		--enable=ineffassign \
 		--enable=dupl \
 		--enable=varcheck \
-		--enable=interfacer \
 		--enable=goconst \
 		--enable=megacheck \
 		--enable=unparam \

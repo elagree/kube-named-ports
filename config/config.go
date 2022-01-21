@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/net/context"
+
 	"github.com/bpineau/kube-named-ports/pkg/clientset"
 	"github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -37,10 +39,9 @@ type KnpConfig struct {
 	Project string
 }
 
-
-
 // Init initialize the configuration's ClientSet
 func (c *KnpConfig) Init(apiserver string, kubeconfig string) error {
+	ctx := context.Background()
 	var err error
 
 	if c.ClientSet == nil {
@@ -51,7 +52,7 @@ func (c *KnpConfig) Init(apiserver string, kubeconfig string) error {
 	}
 
 	// better fail early, if we can't talk to the cluster's api
-	_, err = c.ClientSet.CoreV1().Namespaces().List(metav1.ListOptions{})
+	_, err = c.ClientSet.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("Failed to query Kubernetes api-server: %+v", err)
 	}
