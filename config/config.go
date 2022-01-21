@@ -37,6 +37,8 @@ type KnpConfig struct {
 	Project string
 }
 
+
+
 // Init initialize the configuration's ClientSet
 func (c *KnpConfig) Init(apiserver string, kubeconfig string) error {
 	var err error

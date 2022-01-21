@@ -3,7 +3,7 @@ export GO111MODULE := on
 all: build
 
 tools:
-	which golangci-lint || ( curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $$(go env GOPATH)/bin v1.21.0 )
+	which golangci-lint || ( curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $$(go env GOPATH)/bin v1.43.0 )
 	which goveralls || go get github.com/mattn/goveralls
 
 lint:
